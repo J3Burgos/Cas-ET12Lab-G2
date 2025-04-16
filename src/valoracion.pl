@@ -1,3 +1,7 @@
+% ------------------------------
+% VALORACIÓN DE TÉRMINOS
+% ------------------------------
+
 :- discontiguous interpretacion/3.
 :- multifile interpretacion/3.
 :- dynamic dominio/1.
@@ -15,6 +19,16 @@ valoracion(Variable, ValorInterpretado) :-
 valoracion(Constante, ValorInterpretado) :-
     atomic(Constante),
     interpretacion(Constante, 0, ValorInterpretado).
+
+% Caso 3: Términos compuestos (funciones con argumentos)
+valoracion(TerminoCompuesto, ValorInterpretado) :-
+    compound(TerminoCompuesto),
+    functor(TerminoCompuesto, NombreFunctor, NumeroArgumentos),
+    TerminoCompuesto =.. [NombreFunctor | Argumentos],
+    interpretacion(NombreFunctor, NumeroArgumentos, FunctorInterpretado),
+    valoracion_lista(Argumentos, ArgumentosInterpretados),
+    FuncionAplicada =.. [FunctorInterpretado | ArgumentosInterpretados],
+    call(FuncionAplicada, ValorInterpretado).
 
 % valoracion_lista(+ListaTerminos, -ListaValoresInterpretados)
 valoracion_lista([], []).
