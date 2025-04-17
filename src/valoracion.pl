@@ -7,8 +7,8 @@
 :- dynamic dominio/1.
 
 
-% valoracion(+Termino, -ValorInterpretado)
 % --------------------------------------------------
+% valoracion(+Termino, -ValorInterpretado)
 % CASO 1: Variables — se extraen valores del dominio
 % Si el término es una variable, se asocia a todos los posibles
 % valores del dominio.
