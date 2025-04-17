@@ -1,4 +1,7 @@
+% --------------------------------------------------
 % FORMULAS LOGICAS 
+% --------------------------------------------------
+
 % operador(Simbolo, Aridad, Tipo).
 operador(~, 1, negacion).
 operador(^, 2, conjuncion).
@@ -6,8 +9,10 @@ operador(\/, 2, disyuncion).
 operador(=>, 2, condicional).
 operador(<=>, 2, bicondicional).
 
-
+% --------------------------------------------------
 % TABLAS DE VERDAD
+% --------------------------------------------------
+
 % Cambiar valor de verdadero a falso y viceversa
 negacion(v, f).
 negacion(f, v).
