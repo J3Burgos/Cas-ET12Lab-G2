@@ -75,7 +75,7 @@ evaluacion(exists(Variable, Subformula), ValorVerdad) :-
     ;   ValorVerdad = falso ).
 
 % --------------------------------------------------------------------
-% PREDICADO AUXILIAR: at_least_one_valor(+Var, +Formula, +ValorBuscado)
+% Evaluacion interna del cuatificador:
 % Recorre el dominio para encontrar una asignación de Var tal que la
 % fórmula evaluada con ella tenga el valor buscado.
 % --------------------------------------------------------------------
