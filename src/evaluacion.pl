@@ -14,11 +14,8 @@
 :- op(700, xfy, [<=>]). % Doble implicación (bicondicional)
 
 % Inclusión de definiciones externas
-:- [operadores].            % Definición de operadores
+:- [formulas].              % Definición de operadores
 :- [valoracion].            % Definición de valoración
-
-% Las constantes se interpretan como sí mismas
-interpretacion(SimboloConstante, 0, SimboloConstante).
 
 
 % Verificación inicial: la fórmula debe ser compuesta
@@ -74,6 +71,17 @@ evaluacion(exists(Variable, Subformula), ValorVerdad) :-
         ValorVerdad = verdadero
     ;   ValorVerdad = falso ).
 
+% --------------------------------------------------------------------
+% PREDICADO AUXILIAR: at_least_one_valor(+Var, +Formula, +ValorBuscado)
+% Recorre el dominio para encontrar una asignación de Var tal que la
+% fórmula evaluada con ella tenga el valor buscado.
+% --------------------------------------------------------------------
+at_least_one_valor(Variable, Formula, ValorBuscado) :-
+    valoracion(Variable, ElementoDominio),
+    copy_term([Variable], Formula, [VariableCopiada], FormulaCopiada),
+    VariableCopiada = ElementoDominio,
+    evaluacion(FormulaCopiada, ValorEvaluado),
+    ValorEvaluado == ValorBuscado.
 
 % --------------------------------------------------------------------
 % evaluacion_lista(+Subformulas, -ListaValores)
