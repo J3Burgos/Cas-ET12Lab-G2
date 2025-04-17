@@ -74,3 +74,13 @@ evaluacion(exists(Variable, Subformula), ValorVerdad) :-
         ValorVerdad = verdadero
     ;   ValorVerdad = falso ).
 
+
+% --------------------------------------------------------------------
+% evaluacion_lista(+Subformulas, -ListaValores)
+% Evalúa recursivamente una lista de subfórmulas
+% --------------------------------------------------------------------
+evaluacion_lista([], []).
+evaluacion_lista([Cabeza | Cola], [CabezaEvaluada | ColaEvaluada]) :-
+    evaluacion(Cabeza, CabezaEvaluada),
+    evaluacion_lista(Cola, ColaEvaluada).
+
