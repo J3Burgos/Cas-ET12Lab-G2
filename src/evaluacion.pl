@@ -38,7 +38,10 @@ evaluacion(FormulaAtomica, ValorVerdad) :-
     (\+ ground(FormulaAtomica) ->
         throw(error('La fórmula no es cerrada: ~w', [FormulaAtomica]));
         true),
-    call(PredicadoEvaluado, ValorVerdad).
+    ( call(PredicadoEvaluado, ValorVerdad) ->
+        true
+    ; ValorVerdad = f  % <- Si no hay hecho, entonces es falso
+    ).
 
 % ----------------------------------------------
 % CASO 2: FÓRMULAS LÓGICAS CON OPERADORES
