@@ -4,7 +4,7 @@
 
 :- discontiguous interpretacion/3.
 :- multifile interpretacion/3.
-:- dynamic interpretacion_operadores/3.
+:- dynamic operador/3.
 
 % Definición de operadores lógicos
 :- op(300, fy, [~]).    % Negación
@@ -50,7 +50,7 @@ evaluacion(FormulaAtomica, ValorVerdad) :-
 evaluacion(FormulaLogica, ValorVerdad) :-
     functor(FormulaLogica, Operador, Aridad),
     FormulaLogica =.. [Operador | Subformulas],
-    interpretacion_operadores(Operador, Aridad, OperadorInterpretado),
+    operador(Operador, Aridad, OperadorInterpretado),
     evaluacion_lista(Subformulas, Subvalores),
     FormulaEvaluada =.. [OperadorInterpretado | Subvalores],
     (\+ ground(FormulaLogica) ->
