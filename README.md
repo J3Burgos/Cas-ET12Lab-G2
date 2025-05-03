@@ -10,7 +10,6 @@ forma(a, circulo).
 forma(b, triangulo).
 color(a, rojo).
 color(c, azul).
-al_lado(1, 2).                   % acceso directo
 al_lado(a, b).                  % usando constantes
 
 color(a, rojo) /\ forma(a, circulo).

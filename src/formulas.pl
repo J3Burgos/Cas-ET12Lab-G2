@@ -2,6 +2,13 @@
 % FORMULAS LOGICAS 
 % --------------------------------------------------
 
+% Definición de operadores lógicos
+:- op(300, fy, [~]).    % Negación
+:- op(400, yfx, [/\]).   % Conjunción
+:- op(450, yfx, [\/]).  % Disyunción
+:- op(700, xfy, [=>]).  % Implicación
+:- op(700, xfy, [<=>]). % Doble implicación (bicondicional)
+
 % operador(Simbolo, Aridad, Tipo).
 operador(~, 1, negacion).
 operador(/\, 2, conjuncion).

@@ -36,7 +36,7 @@ color_inter(f1, c1, v).   % a es rojo
 color_inter(f2, c3, v).   % b es verde
 color_inter(f3, c2, v).   % c es azul
 
-lado_inter(1, 2, v).   % a al lado de b
-lado_inter(2, 3, v).   % b al lado de c
+lado_inter(f1, f2, v).   % a al lado de b
+lado_inter(f2, f3, v).   % b al lado de c
 
 

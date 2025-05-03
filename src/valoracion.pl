@@ -6,6 +6,7 @@
 :- multifile interpretacion/3.
 :- dynamic dominio/1.
 
+interpretacion(X, 0, X).
 
 % --------------------------------------------------
 % valoracion(+Termino, -ValorInterpretado)
