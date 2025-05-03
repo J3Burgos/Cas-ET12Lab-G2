@@ -1,8 +1,3 @@
-:- module(evaluacion, [evaluacion/2]).
-:- use_module(formulas).
-:- use_module(valoracion, [valoracion_lista/2, valoracion/2]).
-
-
 % Verificación inicial: la fórmula debe ser compuesta, si no lo es, se lanza un error
 % Este predicado evita evaluar términos sueltos o mal construidos
 evaluacion(Formula, _) :-
@@ -66,9 +61,10 @@ at_least_one_valor(Variable, Formula, Valor) :-
     VariableCopiada = ElementoDominio,
     evaluacion(FormulaCopiada, Valor), !.
 
+
 % --------------------------------------------------------------------
 % evaluacion_lista(+Argumentos, -ListaValores)
-% Evalúa recursivamente una lista de subfórmulas
+% Evalúa recursivamente una lista de subformulaórmulas
 % --------------------------------------------------------------------
 evaluacion_lista([], []).
 evaluacion_lista([Cabeza | Cola], [CabezaEvaluada | ColaEvaluada]) :-

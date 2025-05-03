@@ -1,5 +1,3 @@
-:- module(formulas, [interpretacion/3, operador/3, dominio/1]).
-
 % Sintaxis de operadores lógicos
 :- op(300, fy,  [~]).
 :- op(400, yfx, [/\]).

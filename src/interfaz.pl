@@ -1,8 +1,10 @@
 :- dynamic fichero_cargado/1.
-:- dynamic operador/3.
-:- multifile interpretacion/3.
+
 :- discontiguous interpretacion/3.
+:- multifile interpretacion/3. 
+:- dynamic interpretacion_operadores/3. 
 :- dynamic dominio/1.
+
 :- [valoracion].
 :- [evaluacion].
 :- [formulas].

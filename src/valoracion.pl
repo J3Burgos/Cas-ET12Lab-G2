@@ -1,6 +1,3 @@
-:- module(valoracion, [valoracion_lista/2, valoracion/2]).
-:- use_module(formulas).
-
 % --------------------------------------------------
 % CASO 1: Variables — se extraen valores del dominio
 % Si el término es una variable, se asocia a todos los posibles valores del dominio.
