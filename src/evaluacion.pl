@@ -1,84 +1,73 @@
-% --------------------------------------------------
-% EVALUACIÓN DE FÓRMULAS LÓGICAS
-% --------------------------------------------------
-:- discontiguous interpretacion/3.
-:- multifile interpretacion/3.
-:- dynamic operador/3.
-:- [formulas].              % Definición de operadores
-:- [valoracion].            % Definición de valoración
+:- module(evaluacion, [evaluacion/2]).
+:- use_module(formulas).
+:- use_module(valoracion, [valoracion_lista/2, valoracion/2]).
 
 
 % Verificación inicial: la fórmula debe ser compuesta, si no lo es, se lanza un error
 % Este predicado evita evaluar términos sueltos o mal construidos
 evaluacion(Formula, _) :-
-    (\+ compound(Formula) ->
-        throw(error('El término no es compuesto: ~w', [Formula])), true).
+    (\+ compound(Formula) -> throw(error('El término no es compuesto: ~w', [Formula])), true).
 
 % ----------------------------------------------
 % CASO 1: FÓRMULAS ATÓMICAS (predicados simples)
 % ----------------------------------------------
-evaluacion(FormulaAtomica, ValorVerdad) :-
-    functor(FormulaAtomica, Predicado, Aridad),
-    FormulaAtomica =.. [Predicado | Argumentos],
-    interpretacion(Predicado, Aridad, PredicadoInterpretado),
-    valoracion_lista(Argumentos, ArgumentosInterpretados),
-    PredicadoEvaluado =.. [PredicadoInterpretado | ArgumentosInterpretados],
-    (\+ ground(FormulaAtomica) ->
-        throw(error('La fórmula no es cerrada: ~w', [FormulaAtomica]));
+evaluacion(Formula, Valor) :-
+    functor(Formula, Predicado, Aridad),
+    Formula =.. [Predicado | Argumentos],
+    interpretacion(Predicado, Aridad, PredicadoInt),
+    valoracion_lista(Argumentos, ArgumentosInt),
+    PredicadoEv =.. [PredicadoInt | ArgumentosInt],
+    (\+ ground(Formula) ->
+        throw(error('La fórmula no es cerrada: ~w', [Formula]));
         true),
-    ( call(PredicadoEvaluado, ValorVerdad) ->
-        true
-    ; ValorVerdad = f  % <- Si no hay hecho, entonces es falso
-    ).
+    call(PredicadoEv, Valor).
 
 % ----------------------------------------------
 % CASO 2: FÓRMULAS LÓGICAS CON OPERADORES
 % (~, /\, \/, =>, <=>)
 % ----------------------------------------------
-evaluacion(FormulaLogica, ValorVerdad) :-
-    functor(FormulaLogica, Operador, Aridad),
-    FormulaLogica =.. [Operador | Subformulas],
-    operador(Operador, Aridad, OperadorInterpretado),
-    evaluacion_lista(Subformulas, Subvalores),
-    FormulaEvaluada =.. [OperadorInterpretado | Subvalores],
-    (\+ ground(FormulaLogica) ->
-        throw(error('La fórmula no es cerrada: ~w', [FormulaLogica]));
+evaluacion(Formula, Valor) :-
+    functor(Formula, Operador, Aridad),
+    Formula =.. [Operador | Argumentos],
+    operador(Operador, Aridad, OperadorInt),
+    evaluacion_lista(Argumentos, ArgumentosEv),
+    FormulaEv =.. [OperadorInt | ArgumentosEv],
+    (\+ ground(Formula) ->
+        throw(error('La fórmula no es cerrada: ~w', [Formula]));
         true),
-    call(FormulaEvaluada, ValorVerdad).
+    call(FormulaEv, Valor).
 
 % ----------------------------------------------
 % CASO 3: CUANTIFICADOR UNIVERSAL (forAll) "PARA TODO"
 % ----------------------------------------------
-evaluacion(Formula, ValorVerdad) :-
+evaluacion(Formula, Valor) :-
     Formula =.. [forAll, Variable, Subformula],
-    ( at_least_one_valor(Variable, Subformula, f) ->
-        ValorVerdad = f, !
-    ;   ValorVerdad = v, !
-    ).
+    ((at_least_one_valor(Variable, Subformula, f),
+        Valor = f, !);
+        Valor = v, !).
 
 % ----------------------------------------------
 % CASO 4: CUANTIFICADOR EXISTENCIAL (exists) "EXISTE"
 % ----------------------------------------------
-evaluacion(Formula, ValorVerdad) :-
+evaluacion(Formula, Valor) :-
     Formula =.. [exists, Variable, Subformula],
-    ( at_least_one_valor(Variable, Subformula, v) ->
-        ValorVerdad = v, !
-    ;   ValorVerdad = f, !
-    ).
+    (at_least_one_valor(Variable, Subformula, v),
+        Valor = v, !;   
+        Valor = f, !).
 
 % --------------------------------------------------------------------
 % Evaluacion interna del cuantificador:
 % Recorre el dominio para encontrar una asignación de Var tal que la
 % fórmula evaluada con ella tenga el valor buscado.
 % --------------------------------------------------------------------
-at_least_one_valor(Variable, Formula, _) :-
+at_least_one_valor(Variable, Formula, Valor) :-
     valoracion(Variable, ElementoDominio),
     copy_term([Variable], Formula, [VariableCopiada], FormulaCopiada),
     VariableCopiada = ElementoDominio,
-    evaluacion(FormulaCopiada, _), !.
+    evaluacion(FormulaCopiada, Valor), !.
 
 % --------------------------------------------------------------------
-% evaluacion_lista(+Subformulas, -ListaValores)
+% evaluacion_lista(+Argumentos, -ListaValores)
 % Evalúa recursivamente una lista de subfórmulas
 % --------------------------------------------------------------------
 evaluacion_lista([], []).

@@ -2,6 +2,7 @@
 
 :- [valoracion].
 :- [evaluacion].
+:- [formulas].
 :- [definir_interpretacion].
 :- initialization(main).
 
@@ -40,9 +41,11 @@ procesar_opcion(2) :- !,
 
 procesar_opcion(3) :- !,
     write('\n== Evaluar Formula =='), nl,
-    write('Ingrese la formula: '), nl,
+    write('Ingrese la formula (o "salir." para volver al menu): '), nl,
     read(Formula),
-    ( compound(Formula) ->
+    ( Formula == salir ->
+        write('Saliendo de la evaluacion de frmulas...'), nl
+    ; compound(Formula) ->
         ( catch(evaluacion:evaluacion(Formula, Resultado), Error, (
               write('¡Error durante la evaluacion!'), nl,
               mostrar_error(Error),
@@ -50,8 +53,10 @@ procesar_opcion(3) :- !,
           )) ->
             write('Resultado: '), write(Resultado), nl
         ; write('Formula invalida o error durante la evaluacion.'), nl
-        )
-    ; write('Error: ingrese solo la formula (no use "evaluacion(...)" ni punto y coma).'), nl
+        ),
+        procesar_opcion(3)  % Volver a evaluar otra fórmula
+    ; write('Error: ingrese solo la formula (no use "evaluacion(...)" ni punto y coma).'), nl,
+      procesar_opcion(3)  % Volver a evaluar otra fórmula
     ),
     main.
 

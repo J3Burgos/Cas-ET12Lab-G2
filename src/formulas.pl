@@ -1,13 +1,19 @@
-% --------------------------------------------------
-% FORMULAS LOGICAS 
-% --------------------------------------------------
+:- module(formulas, [interpretacion/3, operador/3, dominio/1]).
 
-% Definición de operadores lógicos
-:- op(300, fy, [~]).    % Negación
-:- op(400, yfx, [/\]).   % Conjunción
-:- op(450, yfx, [\/]).  % Disyunción
-:- op(700, xfy, [=>]).  % Implicación
-:- op(700, xfy, [<=>]). % Doble implicación (bicondicional)
+:- dynamic operador/3.
+:- multifile interpretacion/3.
+:- discontiguous interpretacion/3.
+:- dynamic dominio/1.
+
+% Interpretación genérica de constantes
+interpretacion(X, 0, X).
+
+% Sintaxis de operadores lógicos
+:- op(300, fy,  [~]).
+:- op(400, yfx, [/\]).
+:- op(450, yfx, [\/]).
+:- op(700, xfy, [=>]).
+:- op(700, xfy, [<=>]).
 
 % operador(Simbolo, Aridad, Tipo).
 operador(~, 1, negacion).
