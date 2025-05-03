@@ -1,5 +1,8 @@
 :- dynamic fichero_cargado/1.
-
+:- dynamic operador/3.
+:- multifile interpretacion/3.
+:- discontiguous interpretacion/3.
+:- dynamic dominio/1.
 :- [valoracion].
 :- [evaluacion].
 :- [formulas].
@@ -7,37 +10,60 @@
 :- initialization(main).
 
 main :-
-    menu,
-    read(Opcion),
-    procesar_opcion(Opcion).
+    banner,
+    menu.
 
+banner :-
+    write('       _______    _____    __    __  _____    ____  ____  ____  '), nl,
+    write('      / ____/ |  / /   |  / /   / / / /   |  / __ \\/ __ \\/ __ \\ '), nl,
+    write('     / __/  | | / / /| | / /   / / / / /| | / / / / / / / /_/ / '), nl,
+    write('    / /___  | |/ / ___ |/ /___/ /_/ / ___ |/ /_/ / /_/ / _, _/  '), nl,
+    write('   /_____/  |___/_/  |_/_____/\\____/_/  |_/_____/\\____/_/ |_|   '), nl,
+    write('                         ____  ______                           '), nl,
+    write('                        / __ \\/ ____/                           '), nl,
+    write('                       / / / / __/                              '), nl,
+    write('                      / /_/ / /___                              '), nl,
+    write('                     /_____/_____/                              '), nl,
+    write('         __________  ____  __  _____  ____    ___   _____       '), nl,
+    write('        / ____/ __ \\/ __ \\/  |/  / / / / /   /   | / ___/       '), nl,
+    write('       / /_  / / / / /_/ / /|_/ / / / / /   / /| | \\__ \\        '), nl,
+    write('      / __/ / /_/ / _, _/ /  / / /_/ / /___/ ___ |___/ /        '), nl,
+    write('     /_/    \\____/_/ |_/_/  /_/\\____/_____/_/  |_/____/         '), nl,
+    write('           __    ____  ___________________   _____              '), nl,
+    write('          / /   / __ \\/ ____/  _/ ____/   | / ___/              '), nl,
+    write('         / /   / / / / / __ / // /   / /| | \\__ \\               '), nl,
+    write('        / /___/ /_/ / /_/ // // /___/ ___ |___/ /               '), nl,
+    write('       /_____/\\____/\\____/___/\\____/_/  |_/____/                '), nl,
+    write('                                                                '), nl.
 menu :-
-    write('\n============================================='), nl,
-    write('== Evaluador de Formulas Logicas - Interfaz =='), nl,
-    write('============================================='), nl,
+    write('\n----------------------------------'), nl,
+    write('--------- Menu Principal ---------'), nl,
+    write('----------------------------------'), nl,
     write('0. Definir interpretacion'), nl,
     write('1. Cargar interpretacion'), nl,
     write('2. Ver interpretacion cargada'), nl,
     write('3. Evaluar una formula'), nl,
     write('4. Ayuda'), nl,
     write('5. Salir'), nl,
-    write('Seleccione una opcion: ').
+    write('Seleccione una opcion: '),
+    read(Opcion),
+    procesar_opcion(Opcion).
 
 procesar_opcion(0) :- !,
     write('\n== Definir Interpretacion =='), nl,
     iniciar_interpretacion,
-    main.
+    menu.
 
 procesar_opcion(1) :- !,
     write('\n== Cargar Interpretacion =='), nl,
     write('Nombre del archivo entre comillas ("nombre.pl"): '), nl,
     read(Fichero),
     cargar_fichero(Fichero),
-    main.
+    menu.
 
 procesar_opcion(2) :- !,
     mostrar_interpretacion,
-    main.
+    menu.
 
 procesar_opcion(3) :- !,
     write('\n== Evaluar Formula =='), nl,
@@ -58,11 +84,11 @@ procesar_opcion(3) :- !,
     ; write('Error: ingrese solo la formula (no use "evaluacion(...)" ni punto y coma).'), nl,
       procesar_opcion(3)  % Volver a evaluar otra fórmula
     ),
-    main.
+    menu.
 
 procesar_opcion(4) :- !,
     ayuda,
-    main.
+    menu.
 
 procesar_opcion(5) :- !,
     write('\nSaliendo...'), nl,
@@ -70,11 +96,12 @@ procesar_opcion(5) :- !,
 
 procesar_opcion(_) :-
     write('\nOpcion no valida.'), nl,
-    main.
+    menu.
 
-% =======================
+
+% --------------------------------------------------
 % FUNCIONES AUXILIARES
-% =======================
+% --------------------------------------------------
 
 cargar_fichero(Fichero) :-
     exists_file(Fichero),
@@ -111,9 +138,8 @@ ayuda :-
     write('Cuantificadores:'), nl,
     tab(4), write('forAll(Var, Formula)'), nl,
     tab(4), write('exists(Var, Formula)'), nl,
-    write('\nEjemplos (no usar punto al final):'), nl,
-    tab(4), write('al_lado(a, b)'), nl,
-    tab(4), write('forma(c, triangulo)'), nl,
-    tab(4), write('exists(X, al_lado(c, X))'), nl,
-    write('\nPresione Enter para volver al menu.'), nl,
-    read(_).
+    write('\nEjemplos:'), nl,
+    tab(4), write('al_lado(a, b).'), nl,
+    tab(4), write('forma(c, triangulo).'), nl,
+    tab(4), write('exists(X, al_lado(c, X)).'), nl,
+    write('\nPresione Enter para volver al menu.').

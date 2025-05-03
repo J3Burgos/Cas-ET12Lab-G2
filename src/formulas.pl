@@ -1,13 +1,5 @@
 :- module(formulas, [interpretacion/3, operador/3, dominio/1]).
 
-:- dynamic operador/3.
-:- multifile interpretacion/3.
-:- discontiguous interpretacion/3.
-:- dynamic dominio/1.
-
-% Interpretación genérica de constantes
-interpretacion(X, 0, X).
-
 % Sintaxis de operadores lógicos
 :- op(300, fy,  [~]).
 :- op(400, yfx, [/\]).
