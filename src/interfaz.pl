@@ -75,7 +75,7 @@ procesar_opcion(3) :- !,
         write('Saliendo de la evaluacion de frmulas...'), nl
     ; compound(Formula) ->
         ( catch(evaluacion:evaluacion(Formula, Resultado), Error, (
-              write('¡Error durante la evaluacion!'), nl,
+              write('Error durante la evaluacion!'), nl,
               mostrar_error(Error),
               fail
           )) ->

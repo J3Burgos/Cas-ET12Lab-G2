@@ -1,7 +1,7 @@
 % Verificación inicial: la fórmula debe ser compuesta, si no lo es, se lanza un error
 % Este predicado evita evaluar términos sueltos o mal construidos
 evaluacion(Formula, _) :-
-    (\+ compound(Formula) -> throw(error('El término no es compuesto: ~w', [Formula])), true).
+    (\+ compound(Formula) -> throw(error('El termino no es compuesto: ~w', [Formula])), true).
 
 % ----------------------------------------------
 % CASO 1: FÓRMULAS ATÓMICAS (predicados simples)
@@ -56,10 +56,9 @@ evaluacion(Formula, Valor) :-
 % fórmula evaluada con ella tenga el valor buscado.
 % --------------------------------------------------------------------
 at_least_one_valor(Variable, Formula, Valor) :-
-    valoracion(Variable, ElementoDominio),
-    copy_term([Variable], Formula, [VariableCopiada], FormulaCopiada),
-    VariableCopiada = ElementoDominio,
-    evaluacion(FormulaCopiada, Valor), !.
+    findall(Const, interpretacion(Const, 0, _), Constantes),
+    member(Variable, Constantes),
+    evaluacion(Formula, Valor), !.
 
 
 % --------------------------------------------------------------------
