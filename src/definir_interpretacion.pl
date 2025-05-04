@@ -1,5 +1,7 @@
 :- module(definir_interpretacion, [ iniciar_interpretacion/0 ]).
 
+:- use_module(library(apply)).  % Importa forall/2
+
 :- dynamic interpretacion/3.
 :- dynamic dominio/1.
 :- dynamic usuario_pred/2.
@@ -95,12 +97,12 @@ guardar_interpretacion(Nombre) :-
     normalize_filename(Nombre, Archivo),
     open(Archivo, write, Stream),
     dominio(D), format(Stream, 'dominio(~q).~n~n', [D]),
-    forAll(interpretacion(N, A, I),
+    forall(interpretacion(N, A, I),
            format(Stream, 'interpretacion(~q, ~w, ~q).~n', [N, A, I])),
     nl(Stream),
-    forAll(usuario_pred(F, AInt),
+    forall(usuario_pred(F, AInt),
            ( functor(T, F, AInt),
-             forAll(clause(T, true),
+             forall(clause(T, true),
                     format(Stream, '~q.~n', [T]))
            )),
     close(Stream),
@@ -111,4 +113,3 @@ normalize_filename(Input, Archivo) :-
     ( sub_atom(Input, _, 3, 0, '.pl') -> Archivo = Input
     ; atom_concat(Input, '.pl', Archivo)
     ).
-
