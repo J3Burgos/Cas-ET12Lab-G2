@@ -2,95 +2,71 @@
 
 - Desarrollar un programa capaz de evaluar fórmulas de la lógica de predicados en el contexto de interpretaciones con dominios finitos
 
-## Objetivo
+## Evaluador de Fórmulas Lógicas en Prolog
 
-Desarrollar un entorno interactivo que permita:
+Este proyecto permite definir interpretaciones de estructuras lógicas (constantes, predicados, funciones), evaluar fórmulas usando lógica proposicional y de predicados, y operar sobre dominios personalizados mediante una interfaz interactiva en consola.
 
-- Definir interpretaciones (constantes, funciones, relaciones).
-- Cargar interpretaciones desde archivos.
-- Evaluar fórmulas lógicas con conectores y cuantificadores.
-- Verificar su valor de verdad dentro del modelo cargado.
+## Características
+
+- Definición de interpretaciones personalizadas (constantes, funciones, predicados).
+- Evaluación de fórmulas lógicas con conectores (`~`, `/\`, `\/`, `=>`, `<=>`) y cuantificadores (`forAll`, `exists`).
+- Soporte para evaluaciones en diferentes contextos semánticos (visuales, letras, etc.).
+- Interfaz de menú interactiva.
+- Exportación/importación de interpretaciones a/desde archivos `.pl`.
+
+## Estructura del Proyecto
+
+| Archivo                     | Descripción                                                                              |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| `interfaz.pl`               | Punto de entrada. Proporciona menú interactivo y flujo general del programa.             |
+| `definir_interpretacion.pl` | Permite al usuario construir una interpretación lógicamente válida.                      |
+| `evaluacion.pl`             | Lógica para evaluar fórmulas atómicas, compuestas y cuantificadas.                       |
+| `formulas.pl`               | Define los operadores lógicos y su semántica.                                            |
+| `valoracion.pl`             | Proporciona mecanismos para valorar términos lógicos (variables, funciones, constantes). |
+| `inter_letras.pl`           | Interpretación de prueba basada en letras (`a`, `b`, `c`).                               |
+| `interpretacion.pl`         | Interpretación de prueba basada en un mundo visual con figuras geométricas.              |
+
+## Ejecución
+
+1. Abre SWI-Prolog.
+2. Carga el archivo principal:
+
+   ```prolog
+   ?- [interfaz].
+   ```plaintext
+
+3. Aparecerá un menú con las siguientes opciones:
+
+   ```plaintext
+   0. Definir interpretación
+   1. Cargar interpretación
+   2. Ver interpretación cargada
+   3. Evaluar una fórmula
+   4. Ayuda
+   5. Salir
+   ```
+
+## Sintaxis de Fórmulas
+
+- **Negación**: `~p`
+- **Conjunción**: `p /\ q`
+- **Disyunción**: `p \/ q`
+- **Condicional**: `p => q`
+- **Bicondicional**: `p <=> q`
+- **Cuantificadores**:
+
+  - Universal: `forAll(X, Formula)`
+  - Existencial: `exists(X, Formula)`
+
+### Ejemplos
+
+```prolog
+forma(a, cuadrado).                    % Fórmula atómica
+~forma(b, circulo).                    % Negación
+color(a, rojo) /\ forma(a, circulo).  % Conjunción
+exists(X, forma(X, triangulo)).       % Cuantificador existencial
+```
 
 ## Requisitos
 
 - SWI-Prolog
-
-## Instrucciones
-
-1. Ejecutar el archivo `interfaz.pl` en SWI-Prolog.
-2. Usar el menú principal para:
-   - Definir una interpretación (`opción 0`)
-   - Cargar un archivo de interpretación (`opción 1`)
-   - Ver la interpretación activa (`opción 2`)
-   - Evaluar fórmulas (`opción 3`)
-3. Escribir fórmulas como:
-
-   ```prolog
-   color(a, rojo) /\ forma(a, circulo).
-   exists(X, forma(X, triangulo)).
-   forall(X, exists(Y, al_lado(X, Y))).
-   ```
-
-## Sintaxis de operadores
-
-| Lógico        | Símbolo Prolog | Significado     |
-|---------------|----------------|-----------------|
-| Negación      | `~`            | No              |
-| Conjunción    | `/\`          | Y               |
-| Disyunción    | `\/`          | O               |
-| Condicional   | `=>`           | Si...entonces   |
-| Bicondicional | `<=>`          | Equivalencia    |
-| Cuantificadores | `forall`, `exists` | Para todo / Existe |
-
-## Ejemplos de evaluación
-
-### ✅ Fórmulas Verdaderas
-
-```prolog
-forma(a, circulo).
-forma(b, triangulo).
-color(a, rojo).
-color(c, azul).
-al_lado(a, b).
-
-color(a, rojo) /\ forma(a, circulo).
-color(b, verde) \/ color(b, azul).
-~color(c, rojo).
-color(a, rojo) => forma(a, circulo).
-
-exists(X, color(X, rojo)).
-exists(X, forma(X, triangulo)).
-exists(X, (color(X, verde) /\ forma(X, triangulo))).
-forAll(X, exists(Y, color(X, Y))).
-```
-
-### ❌ Fórmulas Falsas
-
-```prolog
-forma(a, triangulo).
-color(c, rojo).
-color(c, verde).
-forma(c, circulo).
-
-color(a, azul) /\ forma(a, triangulo).
-color(b, rojo) \/ forma(b, cuadrado).
-~color(a, rojo).
-color(a, azul) => forma(a, triangulo).
-
-forall(X, color(X, rojo)).
-forall(X, forma(X, circulo)).
-exists(X, (forma(X, cuadrado) /\ color(X, rojo))).
-forAll(X, exists(Y, al_lado(X, Y))).  % f3 no tiene nadie al lado
-```
-
-## Añadir nuevas fórmulas de prueba
-
-Para probar nuevas fórmulas:
-
-- Usa `opción 3` en el menú.
-- Introduce fórmulas válidas según la sintaxis lógica.
-- Puedes probar combinaciones anidadas, nuevas constantes o relaciones si las defines primero.
-
-## Licencia
-
-Proyecto educativo desarrollado por estudiantes del ET12 - Grupo G2.
