@@ -10,7 +10,7 @@ evaluacion(Formula, Valor) :-
     functor(Formula, Predicado, Aridad),
     Formula =.. [Predicado | Argumentos],
     interpretacion(Predicado, Aridad, PredicadoInt),
-    valoracion_lista(Argumentos, ArgumentosInt),
+    lista_valoraciones(Argumentos, ArgumentosInt),
     PredicadoEv =.. [PredicadoInt | ArgumentosInt],
     (\+ ground(Formula) ->
         throw(error('La fórmula no es cerrada: ~w', [Formula]));
@@ -25,7 +25,7 @@ evaluacion(Formula, Valor) :-
     functor(Formula, Operador, Aridad),
     Formula =.. [Operador | Argumentos],
     operador(Operador, Aridad, OperadorInt),
-    evaluacion_lista(Argumentos, ArgumentosEv),
+    lista_evaluaciones(Argumentos, ArgumentosEv),
     FormulaEv =.. [OperadorInt | ArgumentosEv],
     (\+ ground(Formula) ->
         throw(error('La fórmula no es cerrada: ~w', [Formula]));
@@ -37,7 +37,7 @@ evaluacion(Formula, Valor) :-
 % ----------------------------------------------
 evaluacion(Formula, Valor) :-
     Formula =.. [forAll, Variable, Subformula],
-    ((at_least_one_valor(Variable, Subformula, f),
+    ((verifica_existencia_valor(Variable, Subformula, f),
         Valor = f, !);
         Valor = v, !).
 
@@ -46,7 +46,7 @@ evaluacion(Formula, Valor) :-
 % ----------------------------------------------
 evaluacion(Formula, Valor) :-
     Formula =.. [exists, Variable, Subformula],
-    (at_least_one_valor(Variable, Subformula, v),
+    (verifica_existencia_valor(Variable, Subformula, v),
         Valor = v, !;   
         Valor = f, !).
 
@@ -55,18 +55,18 @@ evaluacion(Formula, Valor) :-
 % Recorre el dominio para encontrar una asignación de Var tal que la
 % fórmula evaluada con ella tenga el valor buscado.
 % --------------------------------------------------------------------
-at_least_one_valor(Variable, Formula, Valor) :-
+verifica_existencia_valor(Variable, Formula, Valor) :-
     findall(Const, interpretacion(Const, 0, _), Constantes),
     member(Variable, Constantes),
     evaluacion(Formula, Valor), !.
 
 
 % --------------------------------------------------------------------
-% evaluacion_lista(+Argumentos, -ListaValores)
+% lista_evaluaciones(+Argumentos, -ListaValores)
 % Evalúa recursivamente una lista de subformulaórmulas
 % --------------------------------------------------------------------
-evaluacion_lista([], []).
-evaluacion_lista([Cabeza | Cola], [CabezaEvaluada | ColaEvaluada]) :-
+lista_evaluaciones([], []).
+lista_evaluaciones([Cabeza | Cola], [CabezaEvaluada | ColaEvaluada]) :-
     evaluacion(Cabeza, CabezaEvaluada),
-    evaluacion_lista(Cola, ColaEvaluada).
+    lista_evaluaciones(Cola, ColaEvaluada).
 

@@ -25,14 +25,14 @@ valoracion(Termino, Valor) :-
     functor(Termino, Functor, Aridad),
     Termino =.. [Functor | Argumentos],
     interpretacion(Functor, Aridad, FunctorInt),
-    valoracion_lista(Argumentos, ArgumentosInt),
+    lista_valoraciones(Argumentos, ArgumentosInt),
     Funcion =.. [FunctorInt | ArgumentosInt],
     call(Funcion, Valor).
 
 % --------------------------------------------------
 % Evalúa una lista de términos lógicos.
 % --------------------------------------------------
-valoracion_lista([], []).
-valoracion_lista([Cabeza | Cola], [CabezaInterpretada | ColaInterpretada]) :-
+lista_valoraciones([], []).
+lista_valoraciones([Cabeza | Cola], [CabezaInterpretada | ColaInterpretada]) :-
     valoracion(Cabeza, CabezaInterpretada),
-    valoracion_lista(Cola, ColaInterpretada).
+    lista_valoraciones(Cola, ColaInterpretada).
