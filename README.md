@@ -61,10 +61,16 @@ Este proyecto permite definir interpretaciones de estructuras lógicas (constant
 ### Ejemplos
 
 ```prolog
-forma(a, cuadrado).                    % Fórmula atómica
-~forma(b, circulo).                    % Negación
-color(a, rojo) /\ forma(a, circulo).  % Conjunción
-exists(X, forma(X, triangulo)).       % Cuantificador existencial
+es_vocal(a).                            True
+~es_vocal(b).                           True
+es_vocal(a) /\ ~es_vocal(c).            True
+es_vocal(b) \/ es_vocal(a).             True
+es_vocal(a) => es_vocal(b).             Falso
+es_vocal(b) <=> es_vocal(c).            True
+exists(X, es_vocal(X)).                 True
+forAll(X, es_vocal(X)).                 Falso
+forAll(X, es_vocal(X) \/ ~es_vocal(X)). Tautologia
+~exists(X, es_vocal(X)).                Negación de cuantificador Falso
 ```
 
 ## Requisitos

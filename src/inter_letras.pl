@@ -1,21 +1,15 @@
-%% INTERPRETACIÓN DE PRUEBA - NÚMEROS SIMPLES
+dominio([1, 2, 3]).
 
-% Dominio de prueba
-dominio([a, b, c]).
-
-% Constantes nombradas
-interpretacion(x, 0, a).
-interpretacion(y, 0, b).
-interpretacion(z, 0, c).
-
-% Función unaria: siguiente letra (rotativo)
+interpretacion(a, 0, 1).
+interpretacion(b, 0, 2).
+interpretacion(c, 0, 3).
 interpretacion(siguiente, 1, sig_letra).
-sig_letra(a, b).
-sig_letra(b, c).
-sig_letra(c, a).
-
-% Predicado unario: vocal (solo 'a')
 interpretacion(es_vocal, 1, pred_vocal).
-pred_vocal(a, v).
-pred_vocal(b, f).
-pred_vocal(c, f).
+
+sig_letra(1, 2).
+sig_letra(2, 3).
+sig_letra(3, 1).
+
+pred_vocal(1, v).
+pred_vocal(2, f).
+pred_vocal(3, f).
