@@ -39,7 +39,7 @@ evaluacion(Formula, Valor) :-
     Formula =.. [forAll, Variable, Subformula],
     ((verifica_existencia_valor(Variable, Subformula, f),
         Valor = f, !);
-        Valor = v, !).
+        Valor = v).
 
 % ----------------------------------------------
 % CASO 4: CUANTIFICADOR EXISTENCIAL (exists) "EXISTE"
@@ -48,7 +48,7 @@ evaluacion(Formula, Valor) :-
     Formula =.. [exists, Variable, Subformula],
     (verifica_existencia_valor(Variable, Subformula, v),
         Valor = v, !;   
-        Valor = f, !).
+        Valor = f).
 
 % --------------------------------------------------------------------
 % Evaluacion interna del cuantificador:
